@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include>
+  <!--General Configuration-->
+  <?define Arch="x86"?>
+  <?define ProductName="System Restore Explorer"?>
+  <?define Author="Nic Bedford"?>
+  <?define VerMajor="0"?>
+  <?define VerMinor="0"?>
+  <?define VerBuild="05"?>
+  <!-- Use SVN version for revision -->
+  <?define VerRev="76"?>
+  <?define ProductVersion="$(var.VerMajor).$(var.VerMinor).$(var.VerBuild).$(var.VerRev)"?>
+  
+  <!--Main Definitions-->
+  <?if $(var.Arch)="x64"?>
+  <?define CpuId="2"?>
+  <?define ProgramFolder="ProgramFiles64Folder"?>
+  <?define VerPostStr=" (64 bit)"?>
+  <?define Is64="yes"?>
+  <?else?>
+  <?define CpuId="1"?>
+  <?define ProgramFolder="ProgramFilesFolder"?>
+  <?define VerPostStr=""?>
+  <?define Is64="no"?>
+  <?endif?>
+
+  <!-- GUIDS -->
+  <!-- We will always do a major upgrade -->
+  <?define ProductCode="*"?>
+  <!-- Do NOT change this or you will break upgrades -->
+  <?define UpgradeCode="AA95E1FC-2F5D-41ec-8FED-D869A638C28A"?>
+</Include>

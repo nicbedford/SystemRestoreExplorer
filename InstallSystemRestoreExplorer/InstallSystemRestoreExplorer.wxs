@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Include config defines -->
+<?include Config.wxi?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="$(var.ProductCode)"
+           Name="$(var.ProductName)"
+           Language="1033"
+           Version="$(var.ProductVersion)"
+           Manufacturer="$(var.Author)"
+           UpgradeCode="$(var.UpgradeCode)">
+    
+    <Package Description="$(var.ProductName)$(var.VerPostStr)"
+             Comments="$(var.ProductName)$(var.VerPostStr)"
+             Manufacturer="$(var.Author)"
+             InstallerVersion="200"
+             InstallPrivileges="elevated"
+             Compressed="yes"
+             Platform="$(var.Platform)"/>
+
+    <!-- 3.5 experimental for custom dialogs -->
+    <WixVariable Id="WixUICostingPopupOptOut" Value="1" Overridable="yes" />
+    
+    <Upgrade Id="$(var.UpgradeCode)">
+      <UpgradeVersion Property="OLDAPPFOUND" IncludeMinimum="yes" Minimum="0.0.0.0" IncludeMaximum="no" Maximum="$(var.ProductVersion)"/>
+      <UpgradeVersion Property="NEWAPPFOUND" IncludeMinimum="no" Minimum="$(var.ProductVersion)"  OnlyDetect="yes"/>
+    </Upgrade>
+    
+    <Media Id="1" Cabinet="SystemRestoreExplorer.cab" EmbedCab="yes" CompressionLevel="high"/>
+    
+    <Condition Message="[ProductName] requires Windows Vista or higher.">VersionNT >= 600</Condition>
+
+    <PropertyRef Id="NETFRAMEWORK35" />
+    <Condition Message="[ProductName] requires Microsoft .NET Framework 3.5 to be installed.">
+      Installed OR NETFRAMEWORK35
+    </Condition>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="INSTALLDIR" Name="System Restore Explorer">
+          <Component Id="SystemRestoreExplorer.exe" Guid="80142AD8-26D2-4a6f-8CAA-E1D503B7C9F7">
+            <File Id="SystemRestoreExplorer.exe" Name="SystemRestoreExplorer.exe" Source="..\Deploy\SystemRestoreExplorer.exe" Vital="yes" KeyPath="yes" DiskId="1">
+              <Shortcut Id="SystemRestoreExplorerShortcut" Directory="SystemRestoreExplorerProgramMenu" Name="System Restore Explorer" Icon="SystemRestoreExplorer.ico" Advertise="yes"/>
+            </File>
+            <RemoveFolder Id="INSTALLDIR" On="uninstall" />
+            <RemoveFolder Id="RemFolder" Directory="SystemRestoreExplorerProgramMenu" On="uninstall"/>
+          </Component>
+
+          <Component Id="AlphaVSS.Common.dll" Guid="1FECF9DF-A36E-4f9d-BFF1-2DE1B23973AE">
+            <File Id="AlphaVSS.Common.dll" Name="AlphaVSS.Common.dll" Source="..\References\AlphaVSS.Common.dll" Vital="yes" KeyPath="yes" DiskId="1"/>
+          </Component>
+
+          <Component Id="AlphaVSS.Win2003.x64.dll" Guid="540712E3-B673-46a6-85CB-BF6D14AB8305">
+            <File Id="AlphaVSS.Win2003.x64.dll" Name="AlphaVSS.Win2003.x64.dll" Source="..\References\AlphaVSS.Win2003.x64.dll" Vital="yes" KeyPath="yes" DiskId="1"/>
+          </Component>
+
+          <Component Id="AlphaVSS.Win2003.x86.dll" Guid="E9CD9A65-F2F4-4e3c-8EE2-8F4F4C009CA3">
+            <File Id="AlphaVSS.Win2003.x86.dll" Name="AlphaVSS.Win2003.x86.dll" Source="..\References\AlphaVSS.Win2003.x86.dll" Vital="yes" KeyPath="yes" DiskId="1"/>
+          </Component>
+
+          <Component Id="AlphaVSS.Win2008.x64.dll" Guid="8862F9A1-9BAB-4795-9C04-946A5D3AAF55">
+            <File Id="AlphaVSS.Win2008.x64.dll" Name="AlphaVSS.Win2008.x64.dll" Source="..\References\AlphaVSS.Win2008.x64.dll" Vital="yes" KeyPath="yes" DiskId="1"/>
+          </Component>
+
+          <Component Id="AlphaVSS.Win2008.x86.dll" Guid="82FFDEDF-564E-42a8-AE35-7A8129F131D5">
+            <File Id="AlphaVSS.Win2008.x86.dll" Name="AlphaVSS.Win2008.x86.dll" Source="..\References\AlphaVSS.Win2008.x86.dll" Vital="yes" KeyPath="yes" DiskId="1"/>
+          </Component>
+
+          <Component Id="AlphaVSS.WinXP.x64.dll" Guid="0F78D1BA-698A-481c-8580-8C627311F200">
+            <File Id="AlphaVSS.WinXP.x64.dll" Name="AlphaVSS.WinXP.x64.dll" Source="..\References\AlphaVSS.WinXP.x64.dll" Vital="yes" KeyPath="yes" DiskId="1"/>
+          </Component>
+
+          <Component Id="AlphaVSS.WinXP.x86.dll" Guid="3F3DEF03-347F-4daf-B05E-F2211D426CAD">
+            <File Id="AlphaVSS.WinXP.x86.dll" Name="AlphaVSS.WinXP.x86.dll" Source="..\References\AlphaVSS.WinXP.x86.dll" Vital="yes" KeyPath="yes" DiskId="1"/>
+          </Component>
+          
+        </Directory>
+      </Directory>
+
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="SystemRestoreExplorerProgramMenu" Name="System Restore Explorer"/>
+      </Directory>
+      
+    </Directory>
+
+    <!-- Define an icon table -->
+    <Icon Id="SystemRestoreExplorer.ico" SourceFile="..\SystemRestoreExplorer\rstrui.ico"/>
+
+    <!-- Set custom value to appear in Add/Remove Programs dialog -->
+    <Property Id="ARPPRODUCTICON" Value="SystemRestoreExplorer.ico"/>
+    <Property Id="ARPHELPLINK" Value="http://nicbedford.co.uk/software/systemrestoreexplorer/"/>
+
+    <Feature Id="DefaultFeature" Level="1">
+      <ComponentRef Id="SystemRestoreExplorer.exe" />
+      <ComponentRef Id="AlphaVSS.Common.dll"/>
+      <ComponentRef Id="AlphaVSS.Win2003.x64.dll"/>
+      <ComponentRef Id="AlphaVSS.Win2003.x86.dll"/>
+      <ComponentRef Id="AlphaVSS.Win2008.x64.dll"/>
+      <ComponentRef Id="AlphaVSS.Win2008.x86.dll"/>
+      <ComponentRef Id="AlphaVSS.WinXP.x64.dll"/>
+      <ComponentRef Id="AlphaVSS.WinXP.x86.dll"/>
+    </Feature>
+
+    <!-- Customise the user interface -->
+    <WixVariable Id="WixUIBannerBmp" Value="bannrbmp.bmp" />
+    <WixVariable Id="WixUIDialogBmp" Value="dlgbmp.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="license.rtf" />
+
+    <!-- Default to ticked -->
+    <Property Id="LAUNCHAPPONEXIT" Value="1"/>
+
+    <!-- We are using the WixUI_InstallDir dialog set -->
+    <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR"/>
+    <UIRef Id="MyWixUI_InstallDir" />
+
+    <!-- This is the code that actually launchs the app -->
+    <Property Id="WixShellExecTarget" Value="[#SystemRestoreExplorer.exe]"/>
+    
+    <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Execute="immediate" Return="check" Impersonate="yes"/>
+    <UI>
+      <Publish Dialog="MyExitDialog" Control="Finish" Order="1" Event="DoAction" Value="LaunchApplication">
+        LAUNCHAPPONEXIT AND NOT (WixUI_InstallMode = "Remove")
+      </Publish>
+    </UI>
+
+    <!-- This will ensure that the LaunchConditions are executed only after searching -->
+    <InstallUISequence>
+      <LaunchConditions After="AppSearch"/>
+    </InstallUISequence>
+    
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallFinalize"/>
+      <LaunchConditions After="AppSearch"/>
+    </InstallExecuteSequence>
+
+  </Product>
+</Wix>
