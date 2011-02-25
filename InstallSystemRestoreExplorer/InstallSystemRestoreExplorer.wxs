@@ -16,11 +16,7 @@
              Manufacturer="$(var.Author)"
              InstallerVersion="200"
              InstallPrivileges="elevated"
-             Compressed="yes"
-             Platform="$(var.Platform)"/>
-
-    <!-- 3.5 experimental for custom dialogs -->
-    <WixVariable Id="WixUICostingPopupOptOut" Value="1" Overridable="yes" />
+             Compressed="yes"/>
     
     <Upgrade Id="$(var.UpgradeCode)">
       <UpgradeVersion Property="OLDAPPFOUND" IncludeMinimum="yes" Minimum="0.0.0.0" IncludeMaximum="no" Maximum="$(var.ProductVersion)"/>
@@ -40,7 +36,7 @@
       <Directory Id="ProgramFilesFolder" Name="PFiles">
         <Directory Id="INSTALLDIR" Name="System Restore Explorer">
           <Component Id="SystemRestoreExplorer.exe" Guid="80142AD8-26D2-4a6f-8CAA-E1D503B7C9F7">
-            <File Id="SystemRestoreExplorer.exe" Name="SystemRestoreExplorer.exe" Source="..\Deploy\SystemRestoreExplorer.exe" Vital="yes" KeyPath="yes" DiskId="1">
+            <File Id="SystemRestoreExplorer.exe" Name="SystemRestoreExplorer.exe" Source="..\SystemRestoreExplorer\bin\$(var.Configuration)\SystemRestoreExplorer.exe" Vital="yes" KeyPath="yes" DiskId="1">
               <Shortcut Id="SystemRestoreExplorerShortcut" Directory="SystemRestoreExplorerProgramMenu" Name="System Restore Explorer" Icon="SystemRestoreExplorer.ico" Advertise="yes"/>
             </File>
             <RemoveFolder Id="INSTALLDIR" On="uninstall" />

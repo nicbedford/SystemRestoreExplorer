@@ -186,13 +186,12 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>XCOPY $(ProjectDir)..\References\*.dll /Y
-"C:\Program Files (x86)\{smartassembly}\{smartassembly}.com" /build "$(ProjectDir)$(ProjectName).{sa}proj"
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties BuildVersion_AssemblyInfoFilename="Properties\VersionInfo.cs" BuildVersion_UpdateFileVersion="True" BuildVersion_UpdateAssemblyVersion="True" />
+      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_UpdateFileVersion="True" BuildVersion_AssemblyInfoFilename="Properties\VersionInfo.cs" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
